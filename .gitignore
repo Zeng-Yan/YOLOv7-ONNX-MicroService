@@ -1,0 +1,28 @@
+# Git相关
+.git/
+
+# IDE配置相关
+*__pycache__/
+*.idea/
+*/shelf/
+
+*.xml
+*.iml
+
+# 数据相关
+*.wav
+*.db
+*.sqlite
+*.pth
+*.mp4
+
+# 部署相关
+*build/
+*dist/
+
+*.exe
+*.npy
+*.pyc
+*.pyd
+*.c
+
