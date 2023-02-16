@@ -33,7 +33,7 @@ flowchart TB
 ## Build Image
 
 ```
-docker build -t zeng/yolo_detect . 
+docker build -t zeng/yolo-detect . 
 ```
 
 ## Quick Start
