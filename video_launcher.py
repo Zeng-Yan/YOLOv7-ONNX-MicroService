@@ -1,5 +1,5 @@
 import cv2
-from infer.yolo_infer import YOLOv7
+from src.infer.yolo_infer import YOLOv7
 import src.configs as cfg
 
 DETECT_FPS = 10
