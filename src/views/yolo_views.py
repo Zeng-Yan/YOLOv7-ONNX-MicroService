@@ -18,18 +18,17 @@ def yolo_detect():
     if request.method not in ['GET', 'POST']:
         response['info'] = '[ERROR] wrong http meathod.'
         return jsonify(response)
-    
-    
-    # data = request.get_data()
-    # data = json.loads(data)
-    # bs64_img = data['img'].split(',')[1]
-
-    bs64_img: str = request.values.get('img').split(',')[1].replace(' ', '')
-    desire = request.values.get('desire')
-
-    if request.method == 'GET' and bs64_img.find('/') != -1:
+    elif request.method == 'GET' and bs64_img.find('/') != -1:
         response['info'] = '[ERROR] Not a urlsafe base64 encoding for using http GET method.'
         return response
+    elif request.method == 'GET':
+        bs64_img: str = request.values.get('img').split(',')[1].replace(' ', '')
+        desire = request.values.get('desire')
+    else:
+        data = request.get_data()
+        data = json.loads(data)
+        bs64_img = data['img'].split(',')[1]
+        desire = data['desire']
     
     bytes_img = base64.urlsafe_b64decode(bs64_img)
     array_img = np.frombuffer(bytes_img, np.uint8)
@@ -43,14 +42,14 @@ def yolo_detect():
         _, output_img = cv2.imencode('.jpg', dstimg)
         bytes_img = output_img.tobytes()
         bs64_img = base64.b64encode(bytes_img).decode('utf8')
+        response['status'] = 200
     except Exception as e:
         print(e)
     else:
         response['result'] = bs64_img
-        response['status'] = 200
     
-    if desire == 'bs64':
-        return jsonify(response)
-    else:
+    if desire == 'html':
         html_src = f'<img src="data:image/jpg;base64, {bs64_img}"/>'
         return html_src
+    else:
+        return jsonify(response)
